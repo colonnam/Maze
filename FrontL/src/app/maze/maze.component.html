@@ -1,0 +1,30 @@
+<p>maze works!</p>
+
+<p>choose difficulty</p>
+
+<div *ngIf="maze==null; else gobloc" id="choicedif">
+
+    <button type="button" (click)="getdiff(1)">
+        easy
+    </button>
+
+    <button type="button" (click)="getdiff(9)">
+        hard
+    </button>
+</div>
+<ng-template #gobloc>
+
+    <button type="button" (click)="randtype()"> rand  </button>
+    <button type="button" (click)="showallneighbors()"> show neighbors  </button>
+    <button type="button" (click)="makeMaze()"> make  </button> 
+    <div id="board">
+        <table id="maze">
+            <tr *ngFor="let case of maze.board" >
+                <td *ngFor="let case2 of case" id="{{case2.posx}}{{case2.posy}}" class="{{case2.type}}" [ngClass]="case2.active ? 'show' : 'hide'" (click)="changetype(case2.posx,case2.posy)"></td>
+            </tr>
+        </table>
+    </div>
+
+</ng-template>
+
+

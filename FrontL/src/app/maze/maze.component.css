@@ -1,0 +1,40 @@
+
+
+table,td{
+    border: 1px solid black;
+    border-spacing: 0px;
+}
+
+table{
+    margin: 10px;
+    background-color: yellowgreen;
+
+}
+td{
+    min-width: 15px;
+    height: 15px; 
+}
+td.path{
+    background-color: green;
+}
+td.wall{
+    background-color: grey;
+}
+td.bomb{
+    background-color: yellow;
+}
+td.show{
+    background-color: black;
+}
+tr:hover{
+    background-color: blue;
+}
+td:hover{
+    background-color: red;
+}
+
+div.board{
+    
+
+    display:inline-block;
+}
