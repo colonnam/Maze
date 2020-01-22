@@ -7,7 +7,7 @@ table,td{
 
 table{
     margin: 10px;
-    background-color: yellowgreen;
+   
 
 }
 td{
@@ -26,11 +26,22 @@ td.bomb{
 td.show{
     background-color: black;
 }
+td.start{
+     border-color: yellow !important;
+      background-color: yellowgreen;
+}
+td.finish{
+     border-color: red !important;
+     background-color:purple;
+}
+td.isplayer{
+    background-color: blue !important;
+}
 tr:hover{
     background-color: blue;
 }
 td:hover{
-    background-color: red;
+    background-color: purple ;
 }
 
 div.board{

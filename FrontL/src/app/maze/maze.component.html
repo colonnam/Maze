@@ -10,17 +10,19 @@
 
     <button type="button" (click)="getdiff(9)">
         hard
-    </button>
+    </button> 
 </div>
 <ng-template #gobloc>
 
     <button type="button" (click)="randtype()"> rand  </button>
     <button type="button" (click)="showallneighbors()"> show neighbors  </button>
     <button type="button" (click)="makeMaze()"> make  </button> 
+    <button type="button" (click)="makeMaze(true)"> anim make  </button> 
+    <button type="button" (click)="findpath()"> path  </button> 
     <div id="board">
         <table id="maze">
             <tr *ngFor="let case of maze.board" >
-                <td *ngFor="let case2 of case" id="{{case2.posx}}{{case2.posy}}" class="{{case2.type}}" [ngClass]="case2.active ? 'show' : 'hide'" (click)="changetype(case2.posx,case2.posy)"></td>
+                <td *ngFor="let case2 of case" id="{{case2.posx}}{{case2.posy}}" class="{{case2.type}}" [ngClass]="[case2.active ? 'show' : 'hide' ,case2.isFinish ? 'finish':'', case2.isStart ? 'start':'', case2.isPlayer ? 'isplayer':'']" (click)="showcell(case2)"></td>
             </tr>
         </table>
     </div>

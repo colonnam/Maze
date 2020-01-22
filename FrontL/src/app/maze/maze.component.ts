@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Maze } from './maze';
 import { Case } from './case';
-import { StylesCompileDependency } from '@angular/compiler';
+import { HostListener } from '@angular/core';
 
 
 @Component({
@@ -16,6 +16,8 @@ export class MazeComponent implements OnInit {
   neighborsOf: Case;
 
 
+
+
   ngOnInit() {
   }
 
@@ -26,6 +28,57 @@ export class MazeComponent implements OnInit {
     this.neighborsOf = null;
 
   }
+
+  showcell(c: Case) {
+        console.log(c);
+    }
+
+    @HostListener('document:keydown', ['$event'])
+        handleKeyboardEvent(event: KeyboardEvent) {
+        const key = event.key;
+        if (key === 'ArrowUp' || key === 'ArrowRight' || key === 'ArrowDown' || key === 'ArrowLeft') {
+          event.preventDefault();
+        }
+        console.log(key);
+        if (this.maze.isdone === true) {
+
+          this.maze.playerPos = this.play(key, this.maze.playerPos, this.maze.board);
+          if (this.maze.playerPos === this.maze.startFinish[1]) {
+            console.log('win');
+            this.makeMaze();
+          }
+       }
+        }
+
+      play(key: string, player: Case, board: Case[][]) {
+
+      console.log(player);
+      if ( key === 'ArrowUp' && board[player.getPosX() - 1][player.getPosY()].getType() !== 'wall') {
+        console.log(player);
+        player.isPlayer = false;
+        player = board[player.getPosX() - 1][player.getPosY()];
+        player.isPlayer = true;
+        }
+      if ( key === 'ArrowDown' && board[player.getPosX() + 1][player.getPosY()].getType() !== 'wall') {
+        console.log(player);
+        player.isPlayer = false;
+        player = board[player.getPosX() + 1][player.getPosY()];
+        player.isPlayer = true;
+        }
+      if ( key === 'ArrowLeft' && board[player.getPosX()][player.getPosY() - 1].getType() !== 'wall') {
+        console.log(player);
+        player.isPlayer = false;
+        player = board[player.getPosX()][player.getPosY() - 1];
+        player.isPlayer = true;
+        }
+      if ( key === 'ArrowRight' && board[player.getPosX()][player.getPosY() + 1].getType() !== 'wall') {
+        console.log(player);
+        player.isPlayer = false;
+        player = board[player.getPosX()][player.getPosY() + 1];
+        player.isPlayer = true;
+        }
+      return player;
+        }
 
   changetype(x: number, y: number) {
 
@@ -92,10 +145,16 @@ export class MazeComponent implements OnInit {
     }
   }
 
-  makeMaze() {
+  makeMaze(anim = false) {
 
-    this.maze.make(this.maze.size,false);
+    this.maze.make(this.maze.size, anim);
 
   }
+
+  findpath(){
+    console.log(this.maze.dikjstra());
+
+    }
+
 
 }

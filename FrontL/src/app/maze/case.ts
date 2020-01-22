@@ -7,6 +7,11 @@ export class Case {
     posy: number;
     neighbors: Case[];
     active: boolean;
+    isStart: boolean;
+    isFinish: boolean;
+    isPlayer: boolean;
+    distance: number;
+    previous:Case;
 
     constructor(x: number, y: number) {
         this.type = 'wall';
@@ -15,6 +20,11 @@ export class Case {
         this.visited = false;
         this.active = false;
         this.neighbors = [];
+        this.isStart = false;
+        this.isFinish = false;
+        this.isPlayer = false;
+        this.previous=null;
+        this.distance = Infinity;
  }
 
     setVisited() {
