@@ -24,7 +24,7 @@ td.bomb{
     background-color: yellow;
 }
 td.show{
-    background-color: black;
+    border-color: pink;
 }
 td.start{
      border-color: yellow !important;
