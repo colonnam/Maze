@@ -15,7 +15,7 @@ td{
     height: 15px; 
 }
 td.path{
-    background-color: green;
+    background-color: black;
 }
 td.wall{
     background-color: grey;
@@ -24,18 +24,18 @@ td.bomb{
     background-color: yellow;
 }
 td.show{
-    border-color: pink;
+    border-color: red;
 }
 td.start{
-     border-color: yellow !important;
-      background-color: yellowgreen;
+     border-color: white !important;
+      background-color: yellow;
 }
 td.finish{
-     border-color: red !important;
-     background-color:purple;
+     border-color: white !important;
+     background-color:red;
 }
 td.isplayer{
-    background-color: blue !important;
+    background-color: green !important;
 }
 tr:hover{
     background-color: blue;
@@ -43,9 +43,13 @@ tr:hover{
 td:hover{
     background-color: purple ;
 }
+div.info{
+     display: inline-block;
+}
 
 div.board{
-    
 
     display:inline-block;
+   margin: 0 auto;
+     width: 100px; 
 }

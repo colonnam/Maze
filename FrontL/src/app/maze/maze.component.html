@@ -1,24 +1,34 @@
-<p>maze works!</p>
-
-<p>choose difficulty</p>
+<div> maze </div>
 
 <div *ngIf="maze==null; else gobloc" id="choicedif">
 
-    <button type="button" (click)="getdiff(1)">
+    <p>choose difficulty</p>
+
+    <button type="button" (click)="makeMaze(9)">
         easy
     </button>
 
-    <button type="button" (click)="getdiff(9)">
+    <button type="button" (click)="makeMaze(25)">
         hard
+    </button> 
+    <button type="button" (click)="makeMaze(121)">
+        very hard
     </button> 
 </div>
 <ng-template #gobloc>
 
-    <button type="button" (click)="randtype()"> rand  </button>
-    <button type="button" (click)="showallneighbors()"> show neighbors  </button>
-    <button type="button" (click)="makeMaze()"> make  </button> 
-    <button type="button" (click)="makeMaze(true)"> anim make  </button> 
-    <button type="button" (click)="findpath()"> path  </button> 
+    <h1>Level {{1+(difficulty-9)/2}}</h1>
+
+    <div id="tools">
+        <button type="button" (click)="makeMaze(difficulty)"> remake  </button> 
+        <button type="button" (click)="findpath(false)"> path  </button> 
+    </div>
+    <div id="info">
+        <p>{{score}}(+{{levelscore}})</p>
+        <p> <span>{{time|date:'mm:ss.S'}}</span> <span>{{moves}} / {{bestmoves}}</span></p>
+    </div>
+
+    
     <div id="board">
         <table id="maze">
             <tr *ngFor="let case of maze.board" >

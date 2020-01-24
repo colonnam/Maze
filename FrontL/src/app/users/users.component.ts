@@ -15,6 +15,7 @@ export class UsersComponent implements OnInit {
 
   users: any = [] ;
 
+
   constructor(private service: UsersService) { }
 
   ngOnInit() {
@@ -27,7 +28,6 @@ export class UsersComponent implements OnInit {
     });
   
   }
-
 
     add(nom){
       const user : User=new User(nom);

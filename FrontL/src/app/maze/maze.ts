@@ -8,109 +8,41 @@ export class Maze {
     size: number;
     board: Case[][];
     paths: Case[];
+    showpath: boolean;
     isdone: boolean;
     startFinish: Case[];
-    visited: Case[];
     playerPos: Case;
+    visited: Case[];
 
     constructor(dif: number) {
         this.difficulty = dif;
-        this.size = dif * 9;
+        this.size = dif;
         this.board = [];
-        this.visited = [];
         this.paths = [];
+        this.visited = [];
         this.startFinish = [];
         this.playerPos = null;
         this.isdone = false;
+        this.showpath = false;
         for (let i = 0; i < this.size; i++) {
             this.board[i] = [];
             for (let j = 0; j < this.size; j++) {
                 this.board[i][j] = new Case(i, j);
             }
         }
-        for (let i = 0; i < this.size; i++) {
 
-            for (let j = 0; j < this.size; j++) {
-                if (i === 0) {
-                    this.board[i][j].addNeighbor(this.board[i + 1][j]);
-
-                    if (j === 0) {
-                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
-                    } else if ( j === this.size - 1) {
-                        this.board[i][j].addNeighbor(this.board[i][j - 1]);
-                    } else {
-                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
-                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
-                    }
-                } else if ( i === this.size - 1 ) {
-
-                    this.board[i][j].addNeighbor(this.board[i - 1][j]);
-                    if (j === 0) {
-                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
-                    } else if ( j === this.size - 1) {
-                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
-                    } else {
-                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
-                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
-
-                    }
-                } else {
-                    this.board[i][j].addNeighbor(this.board[i - 1][j]);
-                    this.board[i][j].addNeighbor(this.board[i + 1][j]);
-                    if (j === 0) {
-
-                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
-                    } else if ( j === this.size - 1) {
-
-                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
-                    } else {
-                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
-                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
-                    }
-
-                }
-            }
-        }
-    }
-
-
-    makebad() {
-
-        for (const bloc of this.board) {
-            for ( const current of bloc) {
-                if (!current.visited) {
-                    current.setVisited();
-                    current.changeType('path');
-                    this.visited.push(current);
-                }
-                const unvisited = [];
-                for ( const neighbor of current.neighbors) {
-                    if ( !neighbor.visited) {
-                        unvisited.push(neighbor);
-                    }
-                }
-
-                while ( unvisited.length > 0) {
-
-                    const rand = Math.floor(Math.random() * unvisited.length);
-                    const randomneigh = unvisited[rand];
-                    randomneigh.setVisited();
-                    randomneigh.changeTyperand();
-                    this.visited.push(randomneigh);
-                    unvisited.splice(rand, 1);
-                }
-
-            }
-
-        }
+        this.initNeighbors();
+        this.make(this.size);
 
     }
 
 
-  make(dimensions: number, tmout = false) {
 
+randomNumber(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
-    this.paths = [];
+  make(dimensions: number) {
 
     const grid  = new Array();
     for (let i = 0; i < dimensions; i++) {
@@ -121,26 +53,12 @@ export class Maze {
         }
     }
 
-    this.addOuterWalls(grid);
-    this.addInnerWalls(grid, true, 1, grid.length - 2, 1, grid.length - 2);
 
-    if (tmout === true) {
-        let t = 1;
-        for (let i = 0; i < dimensions; i++) {
+    this.addInnerWalls(grid, true, 1, grid.length - 2, 1, grid.length - 2);
+    this.addOuterWalls(grid);
+    for (let i = 0; i < dimensions; i++) {
             for (let j = 0; j < dimensions; j++) {
-                const b = this.board[i][j];
-                if (grid[i][j] !== 'w') {
-                    setTimeout(() => {b.changeType('path'); }, t * 20);
-                    this.paths.push(b);
-                } else {
-                    setTimeout( () => {b.changeType('wall'); } , t * 20);
-                }
-                t += 1;
-            }
-        }
-    } else {
-        for (let i = 0; i < dimensions; i++) {
-            for (let j = 0; j < dimensions; j++) {
+
                 const b = this.board[i][j];
                 if (grid[i][j] !== 'w') {
                     b.changeType('path');
@@ -149,45 +67,15 @@ export class Maze {
                     b.changeType('wall');
                 }
             }
-        }
+
     }
+
     this.setStartFinish(this.paths);
+
     this.isdone = true;
 
 
 }
-
-setStartFinish(paths: Case[]) {
-        /*paths[0].isStart = true;
-        paths[paths.length - 1].isFinish = true;*/
-
-        if (this.startFinish.length > 0)  {
-            this.startFinish[0].isStart = false;
-            this.startFinish[1].isFinish = false;
-            this.startFinish = [];
-        }
-
-        const rand = this.randomNumber(0, paths.length - 1);
-        let rand2 = this.randomNumber(0, paths.length - 1);
-        if (rand === rand2) {
-            console.log('rand equal');
-            while (rand === rand2) {
-                rand2 = this.randomNumber(0, paths.length - 1);
-            }
-        }
-
-        paths[rand].isStart = true;
-
-        if (this.playerPos !== null) {
-            console.log('player not null');
-            this.playerPos.isPlayer = false;
-        }
-        this.playerPos = paths[rand];
-        this.playerPos.isPlayer = true;
-        paths[rand2].isFinish = true;
-        this.startFinish.push(paths[rand]);
-        this.startFinish.push(paths[rand2]);
-    }
 
   addOuterWalls(grid: any[] | string[][]) {
 
@@ -252,55 +140,165 @@ setStartFinish(paths: Case[]) {
     }
 }
 
-  randomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-sortNodes(nodes: Case[]) {
-    nodes.sort((n1, n2) => n1.distance - n2.distance);
-}
-dikjstra() {
-    this.playerPos.distance = 0;
-    this.playerPos.setVisited();
-    const ordernodes = [];
-    for (const neighbor of this.playerPos.neighbors) {
-        if (neighbor.getType() === 'path') {
-            neighbor.distance = 1;
-            this.visited.push(neighbor);
+setCurrentPlayer(current: Case) {
+    if (this.playerPos !== null) {
+            this.playerPos.isPlayer = false;
         }
-    }
-    while (this.visited.length > 0) {
-        console.log('ok');
-        this.sortNodes(this.visited);
-        let clnode = this.visited.shift();
+    this.playerPos = current;
+    this.playerPos.isPlayer = true;
+}
 
-        clnode.visited = true;
+setStartFinish(paths: Case[]) {
+        /*paths[0].isStart = true;
+        paths[paths.length - 1].isFinish = true;*/
 
-        if (clnode === this.startFinish[1]) {
-            while (clnode != null) {
-                clnode.switchActive();
-                ordernodes.push(clnode);
-                clnode = clnode.previous;
+        if (this.startFinish.length > 0)  {
+            this.startFinish[0].isStart = false;
+            this.startFinish[1].isFinish = false;
+            this.startFinish = [];
+        }
+
+        const rand = this.randomNumber(0, paths.length - 1);
+        let rand2 = this.randomNumber(0, paths.length - 1);
+        if (rand === rand2) {
+            console.log('rand equal');
+            while (rand === rand2) {
+                rand2 = this.randomNumber(0, paths.length - 1);
             }
-            return ordernodes;
         }
-        this.upneighbor(clnode);
+
+        paths[rand].isStart = true;
+
+        this.setCurrentPlayer(paths[rand]);
+
+        paths[rand2].isFinish = true;
+        this.startFinish.push(paths[rand]);
+        this.startFinish.push(paths[rand2]);
     }
 
-
-
+sortVisited(visited: Case[]) {
+    visited.sort((n1, n2) => n1.distance - n2.distance);
 }
-upneighbor(current: Case) {
+
+initNeighbors() {
+        for (let i = 0; i < this.size; i++) {
+
+            for (let j = 0; j < this.size; j++) {
+                if (i === 0) {
+                    this.board[i][j].addNeighbor(this.board[i + 1][j]);
+
+                    if (j === 0) {
+                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
+                    } else if ( j === this.size - 1) {
+                        this.board[i][j].addNeighbor(this.board[i][j - 1]);
+                    } else {
+                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
+                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
+                    }
+                } else if ( i === this.size - 1 ) {
+
+                    this.board[i][j].addNeighbor(this.board[i - 1][j]);
+                    if (j === 0) {
+                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
+                    } else if ( j === this.size - 1) {
+                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
+                    } else {
+                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
+                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
+
+                    }
+                } else {
+                    this.board[i][j].addNeighbor(this.board[i - 1][j]);
+                    this.board[i][j].addNeighbor(this.board[i + 1][j]);
+                    if (j === 0) {
+
+                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
+                    } else if ( j === this.size - 1) {
+
+                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
+                    } else {
+                    this.board[i][j].addNeighbor(this.board[i][j + 1]);
+                    this.board[i][j].addNeighbor(this.board[i][j - 1]);
+                    }
+
+                }
+            }
+        }
+    }
+
+upneighbor(unVisited: Case[], current: Case) {
+
     for (const neighbor of current.neighbors) {
         if (neighbor.getType() === 'path' && neighbor.visited === false) {
             if ( Math.min(neighbor.distance, current.distance + 1) !== neighbor.distance) {
                 neighbor.distance = current.distance + 1;
                 neighbor.previous = current;
             }
-            this.visited.push(neighbor);
+            unVisited.push(neighbor);
         }
 
     }
 
 }
+
+dikjstra(start) {
+
+    if (this.visited.length > 0) {
+        for (const visited of this.visited) {
+            visited.setUnVisited();
+            visited.distance = Infinity;
+            visited.previous = null;
+            visited.setPathInactive();
+        }
+        this.visited = [];
+    }
+    let dpt = null;
+    if (start) {
+       dpt = this.startFinish[0];
+
+    } else {
+        dpt = this.playerPos;
+    }
+
+    const shortestPath = [];
+    const unVisited = [];
+    dpt.distance = 0;
+    dpt.setVisited();
+    this.visited.push(dpt);
+    for (const neighbor of dpt.neighbors) {
+        if (neighbor.getType() === 'path') {
+            neighbor.distance = 1;
+            unVisited.push(neighbor);
+        }
+    }
+
+    while (unVisited.length > 0) {
+        this.sortVisited(unVisited);
+        let current = unVisited.shift();
+        current.setVisited();
+
+        this.visited.push(current);
+
+        if (current === this.startFinish[1]) {
+            while (current != null) {
+                if (!start) {
+                    current.setPathActive();
+                    if (!this.showpath) {
+                        this.showpath = true;
+                    }
+                }
+
+                shortestPath.push(current);
+                current = current.previous;
+            }
+            return shortestPath;
+        }
+        this.upneighbor(unVisited, current);
+    }
+
+
+
+}
+
 
 }

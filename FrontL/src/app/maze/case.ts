@@ -11,10 +11,10 @@ export class Case {
     isFinish: boolean;
     isPlayer: boolean;
     distance: number;
-    previous:Case;
+    previous: Case;
 
     constructor(x: number, y: number) {
-        this.type = 'wall';
+        this.type = 'path';
         this.posy = y;
         this.posx = x;
         this.visited = false;
@@ -23,15 +23,21 @@ export class Case {
         this.isStart = false;
         this.isFinish = false;
         this.isPlayer = false;
-        this.previous=null;
+        this.previous = null;
         this.distance = Infinity;
  }
 
     setVisited() {
         this.visited = true;
     }
-    switchActive() {
-        this.active = !this.active;
+    setUnVisited() {
+        this.visited = false;
+    }
+    setPathActive() {
+        this.active = true;
+    }
+    setPathInactive() {
+         this.active = false;
     }
     addNeighbor(neighbor: Case) {
         this.neighbors.push(neighbor);
@@ -42,10 +48,11 @@ export class Case {
     changeType(type: string) {
         this.type = type;
     }
-    changeTyperand() {
-        const t = ['wall', 'path'];
-        const rand = Math.floor(Math.random() * t.length);
-        this.changeType(t[rand]);
+    changeTypeToPath() {
+        this.type = 'path';
+    }
+    changeTypeToWall() {
+        this.type = 'wall';
     }
 
     getPosX() {
