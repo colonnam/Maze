@@ -8,7 +8,7 @@ import { User } from './user';
 const httpOptions = {
     headers: new HttpHeaders({
      'Content-Type':  'application/json',
-     'Authorization': 'my-auth-token'
+     Authorization: 'my-auth-token'
     })
   };
 
@@ -16,10 +16,10 @@ const httpOptions = {
   providedIn: 'root'
 })
 
-  
+
 export class UsersService {
 
-  url = 'http://localhost:8080/users'
+  url = 'http://localhost:8080/users';
 
 
   constructor(private http: HttpClient) { }
@@ -29,11 +29,16 @@ export class UsersService {
     return this.http.get(this.url);
   }
 
-  adduser(user:User): Observable<User> {
-    return this.http.post<User>(this.url,user, httpOptions);
+  adduser(user: User): Observable<User> {
+    return this.http.post<User>(this.url, user, httpOptions);
   }
+
+  updateUser(user: User): Observable<User> {
+     return this.http.put<User>(this.url, user, httpOptions);
+  }
+
   deleteUser(id: number): Observable<{}> {
-    const url = `${this.url}/${id}`; // DELETE api/heroes/42
-    return this.http.delete(url, httpOptions)
+    const url = `${this.url}/${id}`;
+    return this.http.delete(url, httpOptions);
   }
 }

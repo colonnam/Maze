@@ -152,20 +152,24 @@ setStartFinish(paths: Case[]) {
         /*paths[0].isStart = true;
         paths[paths.length - 1].isFinish = true;*/
 
+
         if (this.startFinish.length > 0)  {
             this.startFinish[0].isStart = false;
             this.startFinish[1].isFinish = false;
             this.startFinish = [];
         }
+        let rand:number;
+        let rand2:number;
 
-        const rand = this.randomNumber(0, paths.length - 1);
-        let rand2 = this.randomNumber(0, paths.length - 1);
-        if (rand === rand2) {
-            console.log('rand equal');
-            while (rand === rand2) {
-                rand2 = this.randomNumber(0, paths.length - 1);
-            }
+        if(paths.length%2===0){
+        rand = this.randomNumber(0, paths.length*0.33);
+        rand2 = this.randomNumber(0.66*paths.length, paths.length - 1);}
+        else{
+         rand2 = this.randomNumber(0, paths.length*0.33);
+         rand = this.randomNumber(0.66*paths.length, paths.length - 1);
         }
+        
+        
 
         paths[rand].isStart = true;
 

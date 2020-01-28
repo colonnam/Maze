@@ -14,6 +14,7 @@
     <button type="button" (click)="makeMaze(121)">
         very hard
     </button> 
+    
 </div>
 <ng-template #gobloc>
 
@@ -22,6 +23,8 @@
     <div id="tools">
         <button type="button" (click)="makeMaze(difficulty)"> remake  </button> 
         <button type="button" (click)="findpath(false)"> path  </button> 
+
+        <button type="button" (click)="make100()"> 100 make  </button> 
     </div>
     <div id="info">
         <p>{{score}}(+{{levelscore}})</p>

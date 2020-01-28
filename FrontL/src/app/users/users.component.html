@@ -1,3 +1,11 @@
+
+<div *ngIf="current[0]!=null">
+   <p>
+    nom: {{current[0]}}
+    best score : {{current[1]}}
+</p> 
+</div>
+
 <h1>
  liste des utilisateurs
 </h1>
@@ -7,18 +15,21 @@
             <li *ngFor="let user of users"> 
                 <p>id : {{user.id}}</p>
 				<p>
-				nom : {{ user.nom }}
+                nom : {{ user.nom }}
+                score : {{user.score.points}}
                 </p>
-                <button type="button" (click)="delete(user)">delete</button>
+                <button type="button" (click)="delete(user)" onclick="window.location.reload()">delete</button>
 			</li>
         </ul>
     </div>
 </div>
 
+
+
 <form #userform="ngForm">
     <label>nom</label>
-    <input type="text" ngModel name="nom">
+    <input type="text" ngModel name="nom" required>
 
-    <button type="button" (click)="add(userform.value.nom)" onclick="window.location.reload()">add</button>
+    <button type="button" (click)="verify(userform.value.nom)" onclick="window.location.reload()">add</button>
 
 </form>

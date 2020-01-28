@@ -1,7 +1,6 @@
 
 
 table,td{
-    border: 1px solid black;
     border-spacing: 0px;
 }
 
@@ -13,29 +12,35 @@ table{
 td{
     min-width: 15px;
     height: 15px; 
+    box-sizing: border-box;
 }
 td.path{
-    background-color: black;
+    background-color: cyan;
 }
 td.wall{
+
     background-color: grey;
+    border:solid black;
 }
 td.bomb{
     background-color: yellow;
 }
 td.show{
-    border-color: red;
+    border:solid black;
+    background-color: red;
 }
 td.start{
-     border-color: white !important;
-      background-color: yellow;
+  
+
+    background-color: yellow;
 }
 td.finish{
-     border-color: white !important;
+    
      background-color:red;
 }
 td.isplayer{
-    background-color: green !important;
+    border:solid orangered;
+    background-color: blue !important;
 }
 tr:hover{
     background-color: blue;

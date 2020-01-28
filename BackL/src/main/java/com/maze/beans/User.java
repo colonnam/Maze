@@ -3,6 +3,7 @@ package com.maze.beans;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 
@@ -12,7 +13,9 @@ import com.sun.istack.NotNull;
 @Table(name="user")
 public class User {
 	
-	
+	////////////////////
+	/// INFORMATIONS ///
+	////////////////////
 	@Id
 	@Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +40,24 @@ public class User {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+    
+    
+	/////////////////////
+	///   RELATIONS   ///
+	/////////////////////
+    
+    @OneToOne(mappedBy="user",cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    @JsonManagedReference
+    private Score score;
+    
+    public Score getScore() {
+    	return this.score;    
+    	}
+    
+    public void setScore(Score s) {
+    	this.score=s;
     }
 
 }

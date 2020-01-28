@@ -41,6 +41,7 @@ export class MazeComponent implements OnInit {
     this.moves = 0;
     this.cheat = 1;
     this.maze = new Maze(val);
+    console.log(this.maze.paths.length);
     this.timeStart = Date.now();
     this.bestmoves = this.findpath().length;
     setInterval(() => {
@@ -55,11 +56,14 @@ export class MazeComponent implements OnInit {
 
       const bonus = (this.difficulty * (this.bestmoves ** 3) * 10000);
       const malus = (this.timeEnd * (this.moves ** 2) * (this.cheat ** 2));
-      const bs =(this.timeEnd);
-
-      console.log(bonus, malus,bs);
 
       return Math.floor(bonus / malus);
+    }
+
+    make100(){
+      for (let i=0;i<100;i++){
+        this.makeMaze(this.difficulty);
+      }
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -154,7 +158,7 @@ export class MazeComponent implements OnInit {
 
 
 findpath(start= true) {
-
+    //console.log('path looking');
     return this.maze.dikjstra(start);
 
     }
